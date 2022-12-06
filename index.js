@@ -1,5 +1,12 @@
 const inquirer = require("inquirer");
+const fs=require('fs')
+const generateHtml = require('./src/generateHtml')
+const Engineer = require("./lib/engineer")
+const Manager = require("./lib/manager")
+const Intern = require("./lib/intern")
 
+
+const team = []
 const managerQuestions = [
   {
     type: "input",
@@ -69,28 +76,45 @@ const internQuestions = [
   },
 ];
 
-class AskQuestions {
-  constructor(questions) {
-    this.questions = questions;
-    this.data;
-    this.prompt();
-  }
+const addEngineer = async() => {
+  var data =  await inquirer.prompt(engineerQuestions)
+  team.push(new Engineer(data.name, data.id, data.email, data.github))
+  menu()
+}
+const addIntern = async() => {
+  var data =  await inquirer.prompt(internQuestions)
+  team.push(new Intern(data.name, data.id, data.email, data.school))
+  menu()
+}
 
-  prompt() {
-    inquirer.prompt(this.questions).then((answers) => {
-      this.data = answers;
-      this.info();
-    });
-  }
+const menu = async() => {
+  //ask if add engineer, intern, or stop
+  console.log("in the menu")
 
-  info() {
-    return this.data;
+  switch (data.action) {
+    case "Add Engineer":
+      addEngineer()
+      break;
+    case "Add Intern":
+      addIntern()
+      break;
+    default:
+      fs.writeFile('./dist/index.html', generateHtml(team), err=> {
+        if(err){
+          console.log(err)
+        } else{
+          console.log("Your index file has been written")
+        }
+      })
+      break;
   }
 }
 
-const ask = () => {
-   const managerPrompt = new AskQuestions(managerQuestions);
-   managerPrompt.data.name 
+const ask = async () => {
+  console.log("Asking")
+  var data =  await inquirer.prompt(managerQuestions)
+  team.push(new Manager(data.name, data.id, data.email, data.officeNumber))
+  menu()
 };
 
 ask()
