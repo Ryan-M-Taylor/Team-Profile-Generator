@@ -108,11 +108,12 @@ const menu = async () => {
       addIntern();
       break;
     default:
+      console.log(team)
       fs.writeFile("./dist/index.html", generateHtml(team), (err) => {
         if (err) {
           console.log(err);
         } else {
-          console.log("Your index file has been written");
+          console.log("Your index file has been written", team);
         }
       });
       break;
