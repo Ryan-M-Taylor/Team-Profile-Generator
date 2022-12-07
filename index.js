@@ -1,12 +1,11 @@
 const inquirer = require("inquirer");
-const fs=require('fs')
-const generateHtml = require('./src/generateHtml')
-const Engineer = require("./lib/engineer")
-const Manager = require("./lib/manager")
-const Intern = require("./lib/intern")
+const fs = require("fs");
+const generateHtml = require("./src/generateHtml");
+const Engineer = require("./lib/engineer");
+const Manager = require("./lib/manager");
+const Intern = require("./lib/intern");
 
-
-const team = []
+const team = [];
 const managerQuestions = [
   {
     type: "input",
@@ -76,45 +75,55 @@ const internQuestions = [
   },
 ];
 
-const addEngineer = async() => {
-  var data =  await inquirer.prompt(engineerQuestions)
-  team.push(new Engineer(data.name, data.id, data.email, data.github))
-  menu()
-}
-const addIntern = async() => {
-  var data =  await inquirer.prompt(internQuestions)
-  team.push(new Intern(data.name, data.id, data.email, data.school))
-  menu()
-}
+const addEmployee = [
+  {
+    type: "list",
+    message: "Would you like to add another employee?",
+    choices: ["Add Engineer", "Add Intern", "None"],
+    name: "action",
+  },
+];
 
-const menu = async() => {
+const addEngineer = async () => {
+  var data = await inquirer.prompt(engineerQuestions);
+  team.push(new Engineer(data.name, data.id, data.email, data.github));
+  menu();
+};
+const addIntern = async () => {
+  var data = await inquirer.prompt(internQuestions);
+  team.push(new Intern(data.name, data.id, data.email, data.school));
+  menu();
+};
+
+const menu = async () => {
+  var data = await inquirer.prompt(addEmployee)
   //ask if add engineer, intern, or stop
-  console.log("in the menu")
+  console.log("in the menu");
 
   switch (data.action) {
     case "Add Engineer":
-      addEngineer()
+      addEngineer();
       break;
     case "Add Intern":
-      addIntern()
+      addIntern();
       break;
     default:
-      fs.writeFile('./dist/index.html', generateHtml(team), err=> {
-        if(err){
-          console.log(err)
-        } else{
-          console.log("Your index file has been written")
+      fs.writeFile("./dist/index.html", generateHtml(team), (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Your index file has been written");
         }
-      })
+      });
       break;
   }
-}
-
-const ask = async () => {
-  console.log("Asking")
-  var data =  await inquirer.prompt(managerQuestions)
-  team.push(new Manager(data.name, data.id, data.email, data.officeNumber))
-  menu()
 };
 
-ask()
+const ask = async () => {
+  console.log("Asking");
+  var data = await inquirer.prompt(managerQuestions);
+  team.push(new Manager(data.name, data.id, data.email, data.officeNumber));
+  menu();
+};
+
+ask();
