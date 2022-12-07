@@ -96,7 +96,7 @@ const addIntern = async () => {
 };
 
 const menu = async () => {
-  var data = await inquirer.prompt(addEmployee)
+  var data = await inquirer.prompt(addEmployee);
   //ask if add engineer, intern, or stop
   console.log("in the menu");
 
@@ -108,7 +108,7 @@ const menu = async () => {
       addIntern();
       break;
     default:
-      console.log(team)
+      console.log(team);
       fs.writeFile("./dist/index.html", generateHtml(team), (err) => {
         if (err) {
           console.log(err);
