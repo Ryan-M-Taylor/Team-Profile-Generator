@@ -1,3 +1,4 @@
+//importing required files
 const inquirer = require("inquirer");
 const fs = require("fs");
 const generateHtml = require("./src/generateHtml");
@@ -5,7 +6,10 @@ const Engineer = require("./lib/engineer");
 const Manager = require("./lib/manager");
 const Intern = require("./lib/intern");
 
+//empty team array to push created team members into
 const team = [];
+
+//list of questions for manager
 const managerQuestions = [
   {
     type: "input",
@@ -29,6 +33,7 @@ const managerQuestions = [
   },
 ];
 
+//list of questions for engineer
 const engineerQuestions = [
   {
     type: "input",
@@ -52,6 +57,7 @@ const engineerQuestions = [
   },
 ];
 
+//list of questions for intern
 const internQuestions = [
   {
     type: "input",
@@ -75,6 +81,7 @@ const internQuestions = [
   },
 ];
 
+//question for adding additional employees or stopping
 const addEmployee = [
   {
     type: "list",
@@ -84,21 +91,23 @@ const addEmployee = [
   },
 ];
 
+//function to create new engineer
 const addEngineer = async () => {
   var data = await inquirer.prompt(engineerQuestions);
   team.push(new Engineer(data.name, data.id, data.email, data.github));
   menu();
 };
+
+//function to create new intern
 const addIntern = async () => {
   var data = await inquirer.prompt(internQuestions);
   team.push(new Intern(data.name, data.id, data.email, data.school));
   menu();
 };
 
+//function to allow user to select additional employees
 const menu = async () => {
   var data = await inquirer.prompt(addEmployee);
-  //ask if add engineer, intern, or stop
-  console.log("in the menu");
 
   switch (data.action) {
     case "Add Engineer":
@@ -120,8 +129,8 @@ const menu = async () => {
   }
 };
 
+//function to start initial questions
 const ask = async () => {
-  console.log("Asking");
   var data = await inquirer.prompt(managerQuestions);
   team.push(new Manager(data.name, data.id, data.email, data.officeNumber));
   menu();

@@ -1,4 +1,6 @@
+//generates the card for each employee
 const generateCard = (employee) => {
+    //checks for employee role and returns information specific to that employee role
   function checkRole() {
     if (employee.getRole() === "Manager") {
       return `<li class="list-group-item">Office Number: ${employee.officeNumber}</li>`;
@@ -12,6 +14,7 @@ const generateCard = (employee) => {
   }
   const employeeInfo = checkRole();
 
+  //adds icon to employee card depending on role
   function getIcon() {
     if (employee.getRole() === "Manager") {
       return `<i class='fas fa-mug-hot'></i>`;
@@ -47,6 +50,7 @@ const generateCard = (employee) => {
   return card;
 };
 
+//generates HTML template to add employee cards to
 const generateHtml = (data) => {
   var cardString = "";
   for (let i = 0; i < data.length; i++) {
